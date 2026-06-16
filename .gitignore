@@ -1,0 +1,27 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs / scratch
+*.log
+
+# NOTE: data/yfinance_cache.json and output/ASX_Master_Database.xlsx are
+# intentionally committed — the cached snapshot lets the repo run offline,
+# and the workbook is the finished deliverable.
