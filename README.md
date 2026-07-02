@@ -63,6 +63,26 @@ In the committed snapshot, **1,844 of 1,979 entities (93%) carry live or researc
 
 The split refreshes on every run and is shown live on the workbook's **Summary** sheet and in the notebook.
 
+## Workbook preview
+
+### ASX Database
+
+![ASX Database sheet](docs/excel_database.png)
+
+The main sheet: 1,979 rows, one per ASX-listed entity, across 44 columns. Rows are colour-coded by GICS sector (Materials in orange, Financials in teal, Health Care in green, Energy in yellow). Market capitalisation appears as a colour-coded chip cell (Mega Cap through to Nano Cap). The BHS Rating and Progress columns use Excel data-validation dropdowns so ratings stay consistent and filterable. Auto-filter is on every column header; panes are frozen so the company name and ticker stay in view while scrolling across the 44 columns.
+
+### Summary
+
+![Summary sheet](docs/excel_summary.png)
+
+A live pivot dashboard that rebuilds every time the pipeline runs. It breaks the 1,979-entity universe down by GICS sector, market capitalisation category, head-office state or territory, entity type (Company, REIT, Special Vehicle, ETF, ABS Trust, etc.), index membership (S&P/ASX 20 / 50 / 100 / 200 and All Ordinaries), and data source tier. The Overview block at the bottom reports the key quality metrics: total entities, how many carry research or live data, and how many fall back to sector-median estimates.
+
+### Legend
+
+![Legend sheet](docs/excel_legend.png)
+
+A column-by-column reference for every field in the database. Each of the 44 columns has a plain-English description and a worked example drawn from a real ASX entity. The Data Source Key at the top explains the three confidence tiers (Research Data, Live Data, Sector Estimate) and when to treat each one as reliable or indicative only.
+
 ## The Jupyter notebook
 
 [`notebooks/asx_coverage_showcase.ipynb`](notebooks/asx_coverage_showcase.ipynb) runs the whole pipeline interactively and demonstrates the analysis layer:
