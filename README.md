@@ -1,20 +1,18 @@
 # ASX Coverage Toolkit
 
-**A Python pipeline that scrapes, enriches, and packages the entire ASX-listed universe (~1,979 entities) into a single professionally formatted Excel research database — regenerated on demand from live market data.**
+**A Python pipeline that scrapes, enriches, and packages the entire ASX-listed universe (~1,979 entities) into a single professionally formatted Excel research database, regenerated on demand from live market data.**
 
 Built as a self-serve research-triage and screening tool for fundamental equity analysis. One command pulls live pricing and fundamentals from Yahoo Finance for every ASX ticker, layers in four-tier GICS sector classification, S&P/ASX index membership and curated research data, then renders the lot into a colour-coded, filterable workbook with a personal Buy / Hold / Sell and analysis-progress tracker.
 
 > **Stack:** Python · pandas · yfinance · openpyxl · pytest · Jupyter
 
----
-
 ## Highlights
 
-- **Automated data gathering** — `python run.py` fetches live market data for all ~1,979 ASX tickers via the Yahoo Finance API (`.AX` symbols), with batching, retry/back-off, a 24-hour JSON cache, and per-ticker fault tolerance (a missing or delisted ticker is logged and skipped, never crashing the run).
-- **Three-tier data model** — research-verified fundamentals for major names, live yfinance data for the broader market, and transparent sector-median estimates for the long tail of micro/nano-caps. Every row is labelled with its source and confidence.
-- **44-column enriched database** — identity, four-tier GICS, market data, fundamentals, company profile, corporate structure, index membership, and a personal research-workflow tracker.
-- **Professional Excel output** — colour-coded by GICS sector, market-cap "chip" cells, dropdown-validated Buy/Hold/Sell + progress columns, auto-filter and frozen panes, plus a Summary dashboard and a Legend / data-quality sheet.
-- **Jupyter showcase** — an end-to-end notebook walking through fetch → enrich → analyse → visualise → export.
+- **Automated data gathering:** `python run.py` fetches live market data for all ~1,979 ASX tickers via the Yahoo Finance API (`.AX` symbols), with batching, retry/back-off, a 24-hour JSON cache, and per-ticker fault tolerance (a missing or delisted ticker is logged and skipped, never crashing the run).
+- **Three-tier data model:** research-verified fundamentals for major names, live yfinance data for the broader market, and transparent sector-median estimates for the long tail of micro/nano-caps. Every row is labelled with its source and confidence.
+- **44-column enriched database:** identity, four-tier GICS, market data, fundamentals, company profile, corporate structure, index membership, and a personal research-workflow tracker.
+- **Professional Excel output:** colour-coded by GICS sector, market-cap "chip" cells, dropdown-validated Buy/Hold/Sell and progress columns, auto-filter and frozen panes, plus a Summary dashboard and a Legend / data-quality sheet.
+- **Jupyter showcase:** an end-to-end notebook walking through fetch, enrich, analyse, visualise and export.
 
 ## How it works
 
@@ -26,13 +24,13 @@ Built as a self-serve research-triage and screening tool for fundamental equity 
  src/company_data.py (curated) ──┘
 ```
 
-1. **Fetch** — `src/fetch_live.py` batch-pulls each ticker's `info` from yfinance, extracts ~30 fields (price, market cap, shares, P/E, P/B, beta, dividend yield, revenue, net income, 52-week range, analyst consensus, average volume, business summary, …), and caches the result to `data/yfinance_cache.json` with a per-ticker timestamp.
-2. **Enrich** — `src/enrich.py` merges three sources by priority — **Research Data → Live Data → Sector Default** — per field, so live data fills gaps for unresearched names but never overwrites curated fundamentals. It also derives entity type, domicile, market-cap category, GICS tiers, index flags and auto-generated data-quality notes.
-3. **Format** — `src/format_excel.py` builds the three-sheet workbook with openpyxl: the main **ASX Database**, a **Summary** dashboard, and a **Legend**.
+1. **Fetch** (`src/fetch_live.py`): batch-pulls each ticker's `info` from yfinance, extracts roughly 30 fields (price, market cap, shares, P/E, P/B, beta, dividend yield, revenue, net income, 52-week range, analyst consensus, average volume, business summary), and caches the result to `data/yfinance_cache.json` with a per-ticker timestamp.
+2. **Enrich** (`src/enrich.py`): merges three sources by priority (Research Data, then Live Data, then Sector Default) per field, so live data fills gaps for unresearched names but never overwrites curated fundamentals. It also derives entity type, domicile, market-cap category, GICS tiers, index flags and auto-generated data-quality notes.
+3. **Format** (`src/format_excel.py`): builds the three-sheet workbook with openpyxl: the main **ASX Database**, a **Summary** dashboard, and a **Legend**.
 
 ## What it produces
 
-`output/ASX_Master_Database.xlsx` — three sheets:
+`output/ASX_Master_Database.xlsx` with three sheets:
 
 | Sheet | Description |
 |---|---|
@@ -55,13 +53,13 @@ Workflow:      Data Source · BHS Rating (dropdown) · Progress (dropdown) · No
 
 ### Data sources and quality tiers
 
-In the committed snapshot, **1,844 of 1,979 entities (93%) carry live or research-verified data** — only the genuinely dataless tail (ETFs, structured products, suspended shells) falls back to estimates:
+In the committed snapshot, **1,844 of 1,979 entities (93%) carry live or research-verified data.** Only the genuinely dataless tail (ETFs, structured products, suspended shells) falls back to estimates:
 
 | Tier | Label | Snapshot | Confidence |
 |---|---|---|---|
-| 1 | `Research Data` | 155 | High — manually verified fundamentals for major names |
-| 2 | `Live Data` | 1,689 | Medium — live yfinance market data |
-| 3 | `Sector Estimate` | 135 | Low — sector-median defaults, screening use only |
+| 1 | `Research Data` | 155 | High: manually verified fundamentals for major names |
+| 2 | `Live Data` | 1,689 | Medium: live yfinance market data |
+| 3 | `Sector Estimate` | 135 | Low: sector-median defaults, screening use only |
 
 The split refreshes on every run and is shown live on the workbook's **Summary** sheet and in the notebook.
 
@@ -69,11 +67,11 @@ The split refreshes on every run and is shown live on the workbook's **Summary**
 
 [`notebooks/asx_coverage_showcase.ipynb`](notebooks/asx_coverage_showcase.ipynb) runs the whole pipeline interactively and demonstrates the analysis layer:
 
-- live fetch + cache walkthrough,
-- sector / market-cap / index breakdowns,
-- worked screening examples (e.g. ASX 200 materials with dividend yield > 4%),
-- the richer live fields yfinance returns (52-week range, analyst consensus, liquidity), and
-- the Excel export step.
+- live fetch and cache walkthrough
+- sector, market-cap and index breakdowns
+- worked screening examples (e.g. ASX 200 materials with dividend yield > 4%)
+- the richer live fields yfinance returns (52-week range, analyst consensus, liquidity)
+- the Excel export step
 
 ## Quickstart
 
@@ -81,7 +79,7 @@ The split refreshes on every run and is shown live on the workbook's **Summary**
 # Install dependencies
 pip install -r requirements.txt
 
-# Full pipeline — fetch live data, enrich, format, write the workbook
+# Full pipeline: fetch live data, enrich, format, write the workbook
 python run.py
 
 # Build from the committed cache / curated data only (no network needed)
@@ -108,7 +106,7 @@ The repo ships with a committed `data/yfinance_cache.json` snapshot, so `python 
 asx-coverage-toolkit/
 ├── README.md
 ├── requirements.txt
-├── run.py                          # pipeline entry point (fetch → enrich → format)
+├── run.py                          # pipeline entry point (fetch -> enrich -> format)
 ├── data/
 │   ├── ASX_Entities_Enriched.csv   # source universe: 1,979 entities + GICS
 │   └── yfinance_cache.json         # committed live-data snapshot (24h TTL)
@@ -132,14 +130,12 @@ asx-coverage-toolkit/
 
 **Index membership** is based on the S&P/ASX rebalance announcements (March 2026), held as constituent sets in `src/index_sets.py`.
 
-**Entity-type detection** is heuristic — derived from company-name patterns and GICS group. REITs, ETFs, LICs, ABS trusts and warrants are identified separately from operating companies.
+**Entity-type detection** is heuristic, derived from company-name patterns and GICS group. REITs, ETFs, LICs, ABS trusts and warrants are identified separately from operating companies.
 
-**Live vs. curated priority** — live yfinance data drives the current **price, market cap and valuation multiples** for every covered name, while the curated `Research Data` layer adds the company profile (description, leadership, history, franking) and hand-verified statement fundamentals for major names. So marquee names show *both* live pricing and a richer profile; the long tail runs entirely on live data.
+**Live vs. curated priority:** live yfinance data drives the current price, market cap and valuation multiples for every covered name, while the curated `Research Data` layer adds the company profile (description, leadership, history, franking) and hand-verified statement fundamentals for major names. Marquee names show both live pricing and a richer profile; the long tail runs entirely on live data.
 
 ## Disclaimer
 
-Everything here is personal project work shared to demonstrate analytical and technical capability. It is general information only, not financial product advice, and I am not licensed to provide financial advice. `Sector Estimate` rows use illustrative sector-median defaults, not company-specific data — always verify against ASX announcements, company disclosures or a licensed data provider before making any investment decision.
+Everything here is personal project work shared to demonstrate analytical and technical capability. It is general information only, not financial product advice, and I am not licensed to provide financial advice. `Sector Estimate` rows use illustrative sector-median defaults, not company-specific data. Always verify against ASX announcements, company disclosures or a licensed data provider before making any investment decision.
 
----
-
-*Fundamental equity research & data tooling — part of [henrydate](https://github.com/henrydate).*
+*Fundamental equity research and data tooling, part of [henrydate](https://github.com/henrydate).*
